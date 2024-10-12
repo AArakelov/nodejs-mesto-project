@@ -1,5 +1,6 @@
 // Интерфейс для карточки
 import mongoose, { Document, Model } from 'mongoose';
+import { URL_LINK_PATTERNS } from '../utils/patterns';
 
 export interface ICard extends Document {
   name: string;
@@ -19,6 +20,12 @@ const cardSchema = new mongoose.Schema<ICard>({
   link: {
     type: String,
     required: true,
+    validate: {
+      validator(v: string) {
+        return URL_LINK_PATTERNS.test(v);
+      },
+      message: (props: { value: string }) => `${props.value} is not a valid URL!`,
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

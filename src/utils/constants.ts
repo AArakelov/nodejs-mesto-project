@@ -1,4 +1,8 @@
-export const ERRORS = {
+export const httpErrors = {
+  CONFLICT_ERROR: {
+    statusCode: 409,
+    message: 'Пользователь с таким email уже существует',
+  },
   VALIDATION_ERROR: {
     statusCode: 400,
     message: 'Переданы некорректные данные',
@@ -6,6 +10,18 @@ export const ERRORS = {
   NOT_FOUND_ERROR: {
     statusCode: 404,
     message: 'Не найдено',
+  },
+  BAD_REQUEST: {
+    statusCode: 400,
+    message: 'Bad Request',
+  },
+  NOT_AUTHORIZED: {
+    statusCode: 401,
+    message: 'Не авторизован',
+  },
+  INCORRECT_EMAIL_OR_PASSWORD: {
+    statusCode: 401,
+    message: 'Неправильные почта или пароль',
   },
   USER_NOT_FOUND: {
     statusCode: 404,
@@ -22,6 +38,10 @@ export const ERRORS = {
   INVALID_ID_ERROR: {
     statusCode: 400,
     message: 'Передан некорректный _id',
+  },
+  NOT_PERMISSION: {
+    statusCode: 403,
+    message: 'not permission',
   },
   INVALID_CARD_ERROR: {
     statusCode: 400,
