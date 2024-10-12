@@ -1,27 +1,28 @@
-import { NextFunction, Request, Response } from 'express';
+import {NextFunction, Request, Response} from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { ERROR_TYPES, httpErrors, SUCCESS } from '../utils/constants';
-import User, { IUser } from '../models/user';
+import {ERROR_TYPES, httpErrors, SUCCESS} from '../utils/constants';
+import User, {IUser} from '../models/user';
 import BaseError from '../utils/base-error';
+import config from "../config";
 
-const { JWT_SECRET = 'your-secret-key', JWT_EXPIRES_IN = '7d' } = process.env;
+const {jwtSecret: jwtSecret = 'your-secret-key', jwtExpiresIn = '7d'} = config
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
+  const {email, password} = req.body;
   return User.findUserByCredentials(email, password)
     .then((user: IUser) => {
       const token = jwt.sign(
-        { _id: user._id },
-        JWT_SECRET,
-        { expiresIn: JWT_EXPIRES_IN },
+        {_id: user._id},
+        jwtSecret,
+        {expiresIn: jwtExpiresIn},
       );
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
       });
-      res.send({ message: SUCCESS.OK.message });
+      res.send({message: SUCCESS.OK.message});
     })
     .catch((err: Error) => next(err));
 };
@@ -47,20 +48,20 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
     .then((user: IUser) => {
       res.status(SUCCESS.CREATED.statusCode).send(user);
     }).catch((err: any) => {
-      if (err.code === 11000) {
-        return next(new BaseError(
-          httpErrors.CONFLICT_ERROR.message,
-          httpErrors.CONFLICT_ERROR.statusCode,
-        ));
-      }
-      if (err.name === ERROR_TYPES.VALIDATION_ERROR) {
-        return next(new BaseError(
-          httpErrors.VALIDATION_ERROR.message,
-          httpErrors.VALIDATION_ERROR.statusCode,
-        ));
-      }
-      return next(err);
-    });
+    if (err.code === 11000) {
+      return next(new BaseError(
+        httpErrors.CONFLICT_ERROR.message,
+        httpErrors.CONFLICT_ERROR.statusCode,
+      ));
+    }
+    if (err.name === ERROR_TYPES.VALIDATION_ERROR) {
+      return next(new BaseError(
+        httpErrors.VALIDATION_ERROR.message,
+        httpErrors.VALIDATION_ERROR.statusCode,
+      ));
+    }
+    return next(err);
+  });
 };
 
 export const getUserById = (req: Request, res: Response, next: NextFunction) => {
@@ -70,7 +71,7 @@ export const getUserById = (req: Request, res: Response, next: NextFunction) => 
     .then((user) => {
       if (!user) {
         return res.status(httpErrors.USER_NOT_FOUND.statusCode)
-          .json({ message: httpErrors.USER_NOT_FOUND.message });
+          .json({message: httpErrors.USER_NOT_FOUND.message});
       }
       return res.status(SUCCESS.OK.statusCode)
         .json(user);
@@ -86,17 +87,17 @@ export const getUserById = (req: Request, res: Response, next: NextFunction) => 
     });
 };
 export const updateUserProfile = (req: Request, res: Response, next: NextFunction) => {
-  const { name, about, email } = req.body;
+  const {name, about, email} = req.body;
   const userId = req.user._id;
   User.findByIdAndUpdate(
     userId,
-    { name, about, email },
-    { new: true, runValidators: true },
+    {name, about, email},
+    {new: true, runValidators: true},
   )
     .then((user) => {
       if (!user) {
         return res.status(httpErrors.USER_NOT_FOUND.statusCode)
-          .json({ message: httpErrors.USER_NOT_FOUND.message });
+          .json({message: httpErrors.USER_NOT_FOUND.message});
       }
       return res.send(user);
     })
@@ -123,7 +124,7 @@ export const getCurrentUser = (req: Request, res: Response, next: NextFunction) 
     .catch((err) => next(err));
 };
 export const updateUserAvatar = (req: Request, res: Response, next: NextFunction) => {
-  const { avatar } = req.body;
+  const {avatar} = req.body;
   const userId = req.user._id;
   if (userId !== req.params.userId) {
     return next(new BaseError(
@@ -133,8 +134,8 @@ export const updateUserAvatar = (req: Request, res: Response, next: NextFunction
   }
   return User.findByIdAndUpdate(
     userId,
-    { avatar },
-    { new: true, runValidators: true },
+    {avatar},
+    {new: true, runValidators: true},
   ).then((user) => {
     if (!user) {
       throw new BaseError(

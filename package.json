@@ -13,7 +13,10 @@
   "author": "arakelov armen",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/mongoose": "^5.11.97",
+    "@types/validator": "^13.12.2",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "eslint": "^8.57.1",
@@ -24,8 +27,17 @@
   },
   "dependencies": {
     "@types/express": "^4.17.21",
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.3",
+    "dotenv": "^16.4.5",
+    "envalid": "^8.0.0",
     "express": "^4.21.0",
+    "express-winston": "^4.2.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.1",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "validator": "^13.12.0",
+    "winston": "^3.15.0",
+    "winston-daily-rotate-file": "^5.0.0"
   }
 }

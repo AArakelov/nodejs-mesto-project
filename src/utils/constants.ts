@@ -33,7 +33,7 @@ export const httpErrors = {
   },
   SERVER_ERROR: {
     statusCode: 500,
-    message: 'Ошибка на сервере',
+    message: 'На сервере произошла ошибка',
   },
   INVALID_ID_ERROR: {
     statusCode: 400,
