@@ -12,10 +12,15 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
   const {email, password} = req.body;
   return User.findUserByCredentials(email, password)
     .then((user: IUser) => {
-      const token = jwt.sign(
-        {_id: user._id},
+      // Данные для шифрования
+      const payload = { _id: user._id };
+
+
+
+       const token = jwt.sign(
+        payload,
         jwtSecret,
-        {expiresIn: jwtExpiresIn},
+        { expiresIn: "1h" }
       );
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
