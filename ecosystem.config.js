@@ -14,6 +14,14 @@ module.exports = {
         JWT_SECRET: process.env.JWT_SECRET,
       },
     },
+    {
+      name: 'mesto-frontend',
+      script: 'npx serve -s build',
+      env: {
+        NODE_ENV: 'production',
+        PORT: process.env.FRONTEND_PORT,
+      },
+    },
   ],
 
   deploy: {
