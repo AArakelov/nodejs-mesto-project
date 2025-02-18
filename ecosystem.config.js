@@ -23,7 +23,6 @@ module.exports = {
       ref: 'origin/main',
       repo: process.env.GIT_REPO,
       path: process.env.SERVER_PATH,
-      'pre-setup': 'sudo apt update && sudo apt install -y git',
       'post-setup': 'ls -la',
       'pre-deploy': `scp ./*.env ${process.env.SERVER_USER}@${process.env.SERVER_HOST}:${process.env.SERVER_PATH}`,
       'post-deploy':`npm install && npm run build && pm2 reload ecosystem.config.js --env production`,
