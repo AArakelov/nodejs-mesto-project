@@ -25,7 +25,7 @@ module.exports = {
       path: process.env.SERVER_PATH,
       'post-setup': 'ls -la',
       'pre-deploy': `scp ./*.env ${process.env.SERVER_USER}@${process.env.SERVER_HOST}:${process.env.SERVER_PATH}`,
-      'post-deploy':`npm install && npm run build && pm2 reload ecosystem.config.js --env production`,
+      'post-deploy': 'npm i && npm run build',
     },
   },
 };
