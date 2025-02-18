@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: 'mesto-backend',
-      script: 'dist/app.js',
+      script: './dist/app.js',
       instances: 'max',
       exec_mode: 'cluster',
       env: {
@@ -12,14 +12,6 @@ module.exports = {
         PORT: process.env.PORT,
         DB_URL: process.env.DB_URL,
         JWT_SECRET: process.env.JWT_SECRET,
-      },
-    },
-    {
-      name: 'mesto-frontend',
-      script: 'npx serve -s build',
-      env: {
-        NODE_ENV: 'production',
-        PORT: process.env.FRONTEND_PORT,
       },
     },
   ],
