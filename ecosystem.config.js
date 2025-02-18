@@ -26,15 +26,13 @@ module.exports = {
 
   deploy: {
     production: {
+      key: '~/.ssh/id_rsa',
       user: process.env.SERVER_USER,
       host: process.env.SERVER_HOST,
       ref: 'origin/main',
       repo: process.env.GIT_REPO,
       path: process.env.SERVER_PATH,
-
-      'pre-setup': 'sudo apt update && sudo apt install -y git',
       'post-setup': 'ls -la',
-
       'post-deploy': `
         export NVM_DIR=~/.nvm
         source ~/.nvm/nvm.sh
